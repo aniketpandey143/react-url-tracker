@@ -7,29 +7,34 @@ import Page1 from "./Components/Page1";
 import Page2 from "./Components/Page2";
 import Page3 from "./Components/Page3";
 
-// Just keeping initial URLs with default clicks as 0
+// Initial URL data
 const initialUrls = [
   { path: "/page1", label: "Google", clicks: 0 },
   { path: "/page2", label: "Instagram", clicks: 0 },
-  { path: "/page3", label: "Youtube", clicks: 0 },
+  { path: "/page3", label: "YouTube", clicks: 0 },
 ];
 
-export default function App() {
-  // using useState to manage our list and update it on click
-  const [urls, setUrls] = useState(initialUrls);
+// Read from localStorage (if available), else fallback to initialUrls
+const getInitialUrls = () => {
+  const stored = localStorage.getItem("clickData");
+  return stored ? JSON.parse(stored) : initialUrls;
+};
 
-  // whenever a URL is clicked, increase its click count
-  // then sort the list so most clicked ones come on top
+export default function App() {
+  const [urls, setUrls] = useState(getInitialUrls);
+
+  // Handle URL button click
   const handleClick = (path) => {
-    setUrls((prev) =>
-      [...prev]
-        .map((url) =>
-          // only update the one that got clicked
-          url.path === path ? { ...url, clicks: url.clicks + 1 } : url
-        )
-        // sort list so the one with more clicks comes first
-        .sort((a, b) => b.clicks - a.clicks)
-    );
+    // Update the click count
+    const updatedUrls = [...urls]
+      .map((url) =>
+        url.path === path ? { ...url, clicks: url.clicks + 1 } : url
+      )
+      .sort((a, b) => b.clicks - a.clicks); // Reorder: most clicked first
+
+    // Update state and store to localStorage
+    setUrls(updatedUrls);
+    localStorage.setItem("clickData", JSON.stringify(updatedUrls));
   };
 
   return (
@@ -40,10 +45,7 @@ export default function App() {
             <h2>URL Click Tracker</h2>
           </div>
           <div className="card-body">
-            {/* showing the list and passing click function */}
             <URLList urls={urls} onClick={handleClick} />
-
-            {/* routing pages depending on what’s clicked */}
             <Routes>
               <Route path="/page1" element={<Page1 />} />
               <Route path="/page2" element={<Page2 />} />
