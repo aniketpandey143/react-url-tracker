@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-url-tracker/static/css/main.2544e43a.css",
+    "main.js": "/react-url-tracker/static/js/main.55448bab.js",
+    "index.html": "/react-url-tracker/index.html",
+    "main.2544e43a.css.map": "/react-url-tracker/static/css/main.2544e43a.css.map",
+    "main.55448bab.js.map": "/react-url-tracker/static/js/main.55448bab.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2544e43a.css",
+    "static/js/main.55448bab.js"
+  ]
+}
